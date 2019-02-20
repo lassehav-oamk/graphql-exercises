@@ -5,6 +5,14 @@ const { ApolloServer, gql } = require('apollo-server-express');
 const app = express();
 
 const schema = gql`
+  type Mutation {    
+    createUser(email: String!): NewUserResponse!
+  }
+
+  type NewUserResponse {
+    success: Boolean!    
+  }
+
   type Query {
     user(id: ID!): User,
     users: [User!]!
@@ -13,11 +21,8 @@ const schema = gql`
   type User {
     id: ID!,
     email: String!,
-    name: Name!,
-    addressStreet: String!,
-    addressPostNumber: String!,
-    addressCity: String!,
-    addressCountry: String!,
+    name: Name,
+    address: Address,
     birthday: String,
     alias: String #nickname
   }
@@ -27,6 +32,12 @@ const schema = gql`
       familyName: String!
   }
 
+  type Address {
+      street: String!,
+      city: String!,
+      postalCode: Int
+      country: String!
+  }
 `;
 
 let users = [
@@ -67,6 +78,13 @@ const resolvers = {
     }
   },
 
+  Mutation: {
+    createUser: (parent, args, context, info) => { 
+      console.log("creating User.. or not, you need to implement this");
+      return { success: true}
+    }
+  },
+
   User: {
     name: (parent, args, context, info) =>
     {
@@ -74,7 +92,15 @@ const resolvers = {
         firstName: parent.firstName,
         familyName: parent.familyName
       }
-    }
+    },
+    address: (parent, args, context, info) => {
+      return {
+        street: parent.addressStreet,
+        postalCode: parent.addressPostNumber,
+        city: parent.addressCity,
+        country: parent.addressCountry
+      }
+    },
   }
 };
 

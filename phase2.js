@@ -26,7 +26,7 @@ const schema = gql`
 
 let users = [
   {
-    id: 1,
+    id: "1",
     email: "test.user@email.com",
     firstName: "Test",
     familyName: "User",
@@ -37,7 +37,7 @@ let users = [
     birthday: "2000-12-24",
   },
   {
-    id: 2,
+    id: "2",
     email: "john.doe@email.com",
     firstName: "John",
     familyName: "Doe",
@@ -52,10 +52,10 @@ let users = [
 
 const resolvers = {
   Query: {
-    user: () => {
+    user: (parent, args, context, info) => {
       return users[0];
     },
-    users: () => {
+    users: (parents, args, context, info) => {
       return users;
     }
   }
@@ -63,7 +63,15 @@ const resolvers = {
 
 const server = new ApolloServer({
   typeDefs: schema,
-  resolvers
+  resolvers,
+  formatError: error => {
+    console.log(error);
+    return error;
+  },
+  formatResponse: response => {
+    console.log(response);
+    return response;
+  },
 });
 
 server.applyMiddleware({ app, path: '/graphql' });
