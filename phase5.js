@@ -122,7 +122,6 @@ const resolvers = {
 
   Mutation: {
     createUser: (parent, args, context, info) => { 
-      console.log("tut");
       let newUser = {
         id: ((users.length)+1).toString(),
         email: args.email,
