@@ -13,7 +13,7 @@ const schema = gql`
   type User {
     id: ID!,
     email: String!,
-    name: Name!,
+    name: String!,
     addressStreet: String!,
     addressPostNumber: String!,
     addressCity: String!,
